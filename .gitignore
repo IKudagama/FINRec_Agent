@@ -48,6 +48,11 @@ data/fintech.ttl
 # Logs
 *.log
 
+# Markdown documentation files
+*.md
+
 # Environment
 .env
 .env.local
+
+*.md
