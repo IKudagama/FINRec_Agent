@@ -133,6 +133,38 @@ class FinanceOntology:
             })
         return results
     
+    def get_all_products(self) -> dict:
+        """
+        Get all products from the ontology
+        """
+        query = """
+        PREFIX fintech: <http://example.com/fintech/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?product ?name ?description ?volatility ?return ?riskLevel
+        WHERE {
+            ?product a fintech:Product ;
+                     rdfs:label ?name ;
+                     fintech:has_description ?description ;
+                     fintech:has_volatility ?volatility ;
+                     fintech:has_expected_return ?return ;
+                     fintech:is_suitable_for ?riskURI .
+            ?riskURI rdfs:label ?riskLevel .
+        }
+        """
+        products = {}
+        for row in self.graph.query(query):
+            product_id = str(row.product).split("/")[-1]
+            products[product_id] = {
+                "id": product_id,
+                "name": str(row.name),
+                "description": str(row.description),
+                "volatility": float(row.volatility),
+                "expected_return": float(row['return']),
+                "risk_level": str(row.riskLevel)
+            }
+        return products
+    
     def save_ontology(self):
         """
         Save the ontology to a file

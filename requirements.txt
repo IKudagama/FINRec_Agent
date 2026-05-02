@@ -6,3 +6,5 @@ gradio==4.19.1
 numpy==1.24.3
 torch==2.0.1
 langchain==0.1.0
+flask==3.0.0
+flask-cors==4.0.0
